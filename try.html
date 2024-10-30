@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/output.css">
+    <script src="assets/js/script.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="container mx-auto">
+        <!-- Header Buttons -->
+        <div class="flex justify-between items-center mb-8">
+            <!-- Add Task Button -->
+            <button onclick="showModal()" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                Add Task +
+            </button>
+
+            <!-- Modal for Adding Tasks -->
+            <div id="crud-modal" class="hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
+                <div class="relative p-4 w-full max-w-md bg-white rounded-lg shadow">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between p-4 border-b rounded-t">
+                        <h3 class="text-lg font-semibold text-gray-900">Create New Task</h3>
+                        <button onclick="hideModal()" class="text-gray-400 hover:bg-gray-200 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 8.586L5.707 4.293a1 1 0 00-1.414 1.414L8.586 10l-4.293 4.293a1 1 0 001.414 1.414L10 11.414l4.293 4.293a1 1 0 001.414-1.414L11.414 10l4.293-4.293a1 1 0 00-1.414-1.414L10 8.586z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Modal Body -->
+                    <form id="taskForm" class="p-4">
+                        <div class="grid gap-4 mb-4 grid-cols-2">
+                            <div class="col-span-2">
+                                <label for="name" class="block mb-2 text-sm font-medium">Title</label>
+                                <input type="text" id="name" class="w-full p-2.5 rounded-lg border border-gray-300" placeholder="Task Title" required>
+                            </div>
+                            <div>
+                                <label for="startDate" class="block mb-2 text-sm font-medium">Start Date</label>
+                                <input type="date" id="startDate" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+                            </div>
+                            <div>
+                                <label for="dueDate" class="block mb-2 text-sm font-medium">Due Date</label>
+                                <input type="date" id="dueDate" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+                            </div>
+                            <div>
+                                <label for="status" class="block mb-2 text-sm font-medium">Status</label>
+                                <select id="status" class="w-full p-2.5 rounded-lg border border-gray-300">
+                                    <option value="todo">To Do</option>
+                                    <option value="doing">Doing</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="priority" class="block mb-2 text-sm font-medium">Priority</label>
+                                <select id="priority" class="w-full p-2.5 rounded-lg border border-gray-300">
+                                    <option value="P1" class="text-red-500">P1</option>
+                                    <option value="P2" class="text-orange-500">P2</option>
+                                    <option value="P3" class="text-green-500">P3</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <label for="description" class="block mb-2 text-sm font-medium">Task Description</label>
+                                <textarea id="description" rows="4" class="w-full p-2.5 rounded-lg border border-gray-300" placeholder="Write task description here"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5 font-medium">Add new Task</button>
+                        <button type="button" onclick="hideModal()" class="text-white bg-gray-500 hover:bg-gray-600 rounded-lg px-5 py-2.5 font-medium ml-2">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Columns -->
+        <div class="grid grid-cols-3 gap-8">
+            <div id="todo-column">
+                <h2 class="text-lg font-semibold">To Do</h2>
+                <hr class="border-t-2 border-red-400 my-2">
+            </div>
+            <div id="doing-column">
+                <h2 class="text-lg font-semibold">In Progress</h2>
+                <hr class="border-t-2 border-yellow-400 my-2">
+            </div>
+            <div id="done-column">
+                <h2 class="text-lg font-semibold">Done</h2>
+                <hr class="border-t-2 border-green-400 my-2">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
