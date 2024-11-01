@@ -179,14 +179,9 @@ function filter_Taches() {
 // }
 function filtrerByPriority() {
     const selectedPriority = document.getElementById("priorityFilter").value;
-
-    // Clear the task columns
     document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
-
-    // Filter tasks by selected priority or display all if "all" is selected
-    tasks
-        .filter(task => selectedPriority === "all" || task.priority === selectedPriority)
-        .forEach(task => displayTask(task));
+    const filteredTasks = tasks.filter(task => selectedPriority === "all" || task.priority === selectedPriority);
+    filteredTasks.forEach(task => displayTask(task));
 }
 
 
