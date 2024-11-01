@@ -202,6 +202,30 @@ abbr:where([title]) {
           text-decoration: underline dotted;
 }
 
+@media(max-width:700){
+  mod_div{
+    display : grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+  }
+  mod_div #mod_div{
+    grid-column: 0;
+    grid-row: 1;
+  }
+  mod_div .recherche{
+    grid-column: 0;
+    grid-row: 1;
+  }
+  mod_div #mod_div{
+    grid-column: 0;
+    grid-row: 1;
+  }
+  mod_div #mod_div{
+    grid-column: 0;
+    grid-row: 1;
+  }
+  
+}
 /*
 Remove the default font size and weight for headings.
 */
@@ -835,6 +859,9 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
 }
+.border-orange-500{
+  	border-color: rgb(249 115 22);
+}
 
 .border-red-400 {
   --tw-border-opacity: 1;
@@ -865,6 +892,22 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
+.bg-orange-500 {
+  --tw-bg-opacity: 1;
+ background-color: rgb(249 115 22); 
+}	
+
+.bg-green-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94);
+}	
+.bg-cyan-600{
+  background-color: rgb(8 145 178);
+}	
+.bg-purple-600{
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 51 234);
+}	
 
 .bg-gray-100 {
   --tw-bg-opacity: 1;
