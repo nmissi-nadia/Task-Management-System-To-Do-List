@@ -1,3 +1,7 @@
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+tasks.forEach(task => displayTask(task));
+console.log(tasks);
+
 // Fonction pour afficher le formulaire de création de tâche
 function Afficher_form() {
     document.getElementById("crud-modal").classList.remove("hidden");
@@ -13,61 +17,81 @@ function hideModal() {
 function addTask(event) {
     event.preventDefault();
 
-    const title = document.getElementById("name").value;
+    const title = document.getElementById("name").value.trim();
     const startDate = document.getElementById("startdate").value;
     const endDate = document.getElementById("duedate").value;
-    const status = document.getElementById("status").value;
-    const priority = document.getElementById("priority").value;
-    const description = document.getElementById("description").value;
+    const description = document.getElementById("description").value.trim();
+    let isValid = true; 
 
-    const task = {
-        title,
-        startDate,
-        endDate,
-        status,
-        priority,
-        description,
-    };
+    // validation de titre
+    if (title === "") {
+        alert("Le titre est vide.");
+        isValid = false;
+    }
 
-    saveTaskToLocalStorage(task); // Sauvegarde la tâche dans localStorage
-    displayTask(task);
-    hideModal();
+    // validation de date
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+        alert("La date de début doit être antérieure ou égale à la date de fin.");
+        isValid = false;
+    }
+// validation de description
+    if (description === "") {
+        alert("La description est vide.");
+        isValid = false;
+    }
+    let id = tasks.length === 0 ? 0 : tasks[tasks.length - 1].id + 1;
+    const task = getTaskFromForm(id);
+    if(isValid === true){
+        saveTaskToLocalStorage(task); 
+        displayTask(task);
+        hideModal();
+    }else{
+        hideModal();
+    }
+
+    
 }
 
 // Fonction pour sauvegarder une tâche dans localStorage
 function saveTaskToLocalStorage(task) {
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     tasks.push(task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 // Fonction pour afficher une tâche sur la page
 function displayTask(task) {
+    const existingTask = document.getElementById(task.id);
+    if (existingTask) existingTask.remove();  
+
     const taskContainer = document.createElement("div");
-    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow");
+    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow","transform", "transition","duration-500" ,"hover:scale-125");
     taskContainer.draggable = true;
     taskContainer.ondragstart = drag;
-    taskContainer.id = task.title;
+    taskContainer.id = task.id;
 
     if (task.priority === "P1") taskContainer.classList.add("border-red-500");
-    else if (task.priority === "P2") taskContainer.classList.add("border-orange-500");
-    else if (task.priority === "P3") taskContainer.classList.add("border-green-500");
+    else if (task.priority === "P2") taskContainer.classList.add("border-blue-500");
+    else if (task.priority === "P3") taskContainer.classList.add("border-green-700");
 
     taskContainer.innerHTML = `
         <p class="font-medium">${task.title}</p>
-        <p class="text-gray-500 text-sm">${task.startDate} - ${task.endDate}</p>
+        <p class="font-medium">${task.description}</p>
+        <p class="text-gray-500 text-sm">From ${task.startDate} Until ${task.endDate}</p>
         <div class="mt-2 flex space-x-2">
-            <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="deleteTask('${task.title}')">Delete</button>
-            <button class="bg-yellow-400 text-white px-2 py-1 rounded" onclick="editTask('${task.title}')">Edit</button>
+            <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="supprimerTask(${task.id})">Delete</button>
+            <button class="bg-yellow-400 text-white px-2 py-1 rounded" onclick="editTask(${task.id})">Edit</button>
         </div>
     `;
 
     const column = document.getElementById(`${task.status}-tasks`);
     column.appendChild(taskContainer);
 }
+console.log(count);
 
-function getTaskFromForm() {
+// Récupère les informations de tâche depuis le formulaire
+function getTaskFromForm(id) {
     return {
+        id: id,
         title: document.getElementById("name").value,
         startDate: document.getElementById("startdate").value,
         endDate: document.getElementById("duedate").value,
@@ -77,15 +101,13 @@ function getTaskFromForm() {
     };
 }
 
-
-function editTask(title) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const taskToEditIndex = tasks.findIndex(task => task.title === title); // Get index instead of object
+// Fonction pour éditer une tâche
+function editTask(id) {
+    const taskToEditIndex = tasks.findIndex(task => task.id === id); 
 
     if (taskToEditIndex !== -1) {
-        const taskToEdit = tasks[taskToEditIndex]; 
+        const taskToEdit = tasks[taskToEditIndex];
 
-       
         document.getElementById("name").value = taskToEdit.title;
         document.getElementById("startdate").value = taskToEdit.startDate;
         document.getElementById("duedate").value = taskToEdit.endDate;
@@ -93,18 +115,14 @@ function editTask(title) {
         document.getElementById("priority").value = taskToEdit.priority;
         document.getElementById("description").value = taskToEdit.description;
 
-        Afficher_form(); 
+        Afficher_form();
 
-        
         document.getElementById("taskForm").onsubmit = function(event) {
             event.preventDefault();
 
-            const updatedTask = getTaskFromForm(); 
+            const updatedTask = getTaskFromForm(id);
 
-            
             tasks[taskToEditIndex] = updatedTask; 
-
-            
             localStorage.setItem("tasks", JSON.stringify(tasks));
 
             displayTask(updatedTask);
@@ -113,23 +131,14 @@ function editTask(title) {
     }
 }
 
-
-// Fonction pour supprimer une tâche de la page et de localStorage
-function deleteTask(title) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const updatedTasks = tasks.filter(task => task.title !== title);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-
-    const taskCard = document.getElementById(title);
-    taskCard.remove();
+// Fonction pour supprimer une tâche
+function supprimerTask(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    const taskCard = document.getElementById(id);
+    if (taskCard) taskCard.remove();
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-
-// Fonction pour charger les tâches depuis localStorage au chargement de la page
-function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.forEach(task => displayTask(task));
-}
-
+    
 // Fonction de gestion du drag-and-drop
 function drag(event) {
     event.dataTransfer.setData("text", event.target.id);
@@ -154,5 +163,19 @@ function filter_Taches() {
     });
 }
 
+// fonction qui permet de filtrer les taches  d'apres une select par les priority 
+function filtrerByPriority(){
+    const prchoisi = document.getElementById("priorityFilter").value;
+    document.querySelectorAll(".task-column").forEach(column => column.innerHTML ="");
+    tasks.forEach(task => {
+        if (prchoisi === "all"  || task.priority === prchoisi) {
+        displayTask(task);
+    }
+});
+}
+
 // Charger les tâches quand la page est prête
-window.onload = loadTasks;
+window.onload = () => tasks.forEach(task => displayTask(task));
+
+
+
