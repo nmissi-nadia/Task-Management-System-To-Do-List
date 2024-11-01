@@ -25,7 +25,10 @@ function addTask(event) {
 
     // validation de titre
     if (title === "") {
-        alert("Le titre est vide.");
+        alert("Le titre est requis.");
+        isValid = false;
+    } else if (title.length > 16) {
+        alert("Le titre ne doit pas dépasser 16 caractères.");
         isValid = false;
     }
 
@@ -46,7 +49,7 @@ function addTask(event) {
         displayTask(task);
         hideModal();
     }else{
-        hideModal();
+        Afficher_form();
     }
 
     
@@ -70,8 +73,8 @@ function displayTask(task) {
     taskContainer.id = task.id;
 
     if (task.priority === "P1") taskContainer.classList.add("border-red-500");
-    else if (task.priority === "P2") taskContainer.classList.add("border-blue-500");
-    else if (task.priority === "P3") taskContainer.classList.add("border-green-700");
+    else if (task.priority === "P2") taskContainer.classList.add("border-orange-500");
+    else if (task.priority === "P3") taskContainer.classList.add("border-green-400");
 
     taskContainer.innerHTML = `
         <p class="font-medium">${task.title}</p>
@@ -85,8 +88,9 @@ function displayTask(task) {
 
     const column = document.getElementById(`${task.status}-tasks`);
     column.appendChild(taskContainer);
+    Mise_a_jour_nbr_Tache();
 }
-console.log(count);
+
 
 // Récupère les informations de tâche depuis le formulaire
 function getTaskFromForm(id) {
@@ -164,17 +168,41 @@ function filter_Taches() {
 }
 
 // fonction qui permet de filtrer les taches  d'apres une select par les priority 
-function filtrerByPriority(){
-    const prchoisi = document.getElementById("priorityFilter").value;
-    document.querySelectorAll(".task-column").forEach(column => column.innerHTML ="");
-    tasks.forEach(task => {
-        if (prchoisi === "all"  || task.priority === prchoisi) {
-        displayTask(task);
-    }
-});
+// function filtrerByPriority(){
+//     const prchoisi = document.getElementById("priorityFilter").value;
+//     document.querySelectorAll(".task-column").forEach(column => column.innerHTML ="");
+//     tasks.forEach(task => {
+//         if (prchoisi === "all"  || task.priority === prchoisi) {
+//         displayTask(task);
+//     }
+// });
+// }
+function filtrerByPriority() {
+    const selectedPriority = document.getElementById("priorityFilter").value;
+
+    // Clear the task columns
+    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
+
+    // Filter tasks by selected priority or display all if "all" is selected
+    tasks
+        .filter(task => selectedPriority === "all" || task.priority === selectedPriority)
+        .forEach(task => displayTask(task));
 }
 
-// Charger les tâches quand la page est prête
+
+// le mise a jour du nombre des taches pour chaque column
+function Mise_a_jour_nbr_Tache() {
+    const statusCounts = { "todo": 0, "doing": 0, "done": 0 };
+
+    tasks.forEach(task => {
+        if (statusCounts[task.status] !== undefined) {
+            statusCounts[task.status]++;
+        }
+    });
+    document.getElementById("todo-count").textContent = statusCounts["todo"];
+    document.getElementById("doing-count").textContent = statusCounts["doing"];
+    document.getElementById("done-count").textContent = statusCounts["done"];
+}
 window.onload = () => tasks.forEach(task => displayTask(task));
 
 

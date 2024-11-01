@@ -15,8 +15,8 @@
     <div class="container mx-auto">
 
         <!-- Header and Actions -->
-        <div class="flex justify-between items-center mb-8 mod_div">
-            <button id="but-add1" onclick="Afficher_form()" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button">
+        <div class="flex justify-between items-center mb-8 mod_div ">
+            <button id="but-add1" onclick="Afficher_form()" class="block text-white bg-cyan-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button">
                 Add Task +
             </button>
             <div class="recherche relative w-1/3">
@@ -30,38 +30,38 @@
             </div>
             <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
                 <label for="priorityFilter" class="font-semibold text-gray-700">Filtrer par priorité :</label>
-                <select id="priorityFilter" onchange="filtrerByPriority()" class="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                <select id="priorityFilter" onchange="filtrerByPriority()" class="bg-cyan-600 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
                     <option value="all" class="font-medium">Toutes les priorités</option>
                     <option value="P1" class="font-medium text-red-500">P1 - Haute</option>
                     <option value="P2" class="font-medium text-yellow-500">P2 - Moyenne</option>
                     <option value="P3" class="font-medium text-green-500">P3 - Basse</option>
                 </select>
             </div>
-            <button onclick="Afficher_form()" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button">
+            <button onclick="Afficher_form()" class="block text-white bg-cyan-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button">
                 Add Multiple Tasks
             </button>
         </div>
 
         <!-- Task Columns (To Do, In Progress, Done) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div id="todo-column" class="bg-white p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2 class="text-lg font-semibold mb-2">To Do</h2>
+            <div id="todo-column" class="bg-white border-neutral-950 p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2 class="text-lg font-semibold mb-2">To Do | (<span id="todo-count">0</span>)</h2>
                 <hr class="border-t-2 border-red-400 my-2">
                 <div class="space-y-4" id="todo-tasks">
                     <!-- lorsque j'ai ajouté une tache to do sera afficher là -->
                 </div>
             </div>
 
-            <div id="doing-column" class="bg-white p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2 class="text-lg font-semibold mb-2">In Progress |<span id="count"></span></h2>
+            <div id="doing-column" class="bg-white border-neutral-950 p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2 class="text-lg font-semibold mb-2">In Progress | (<span id="doing-count">0</span>)</h2>
                 <hr class="border-t-2 border-yellow-400 my-2">
                 <div class="space-y-4" id="doing-tasks">
                     <!-- lorsque j'ai ajouté une tache doing sera afficher là -->
                 </div>
             </div>
 
-            <div id="done-column" class="bg-white p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2 class="text-lg font-semibold mb-2">Done</h2>
+            <div id="done-column" class="bg-white p-4 border-neutral-950 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2 class="text-lg font-semibold mb-2">Done | (<span id="done-count">0</span>)</h2>
                 <hr class="border-t-2 border-green-400 my-2">
                 <div class="space-y-4 " id="done-tasks">
                     <!-- lorsque j'ai ajouté une tache done sera afficher là -->
@@ -72,7 +72,7 @@
 
     <!-- Modal for Adding Task -->
     <div id="crud-modal" class="hidden fixed inset-0 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <div class=" rounded-lg bg-cyan-600 shadow-lg w-full max-w-md p-6">
             <h3 class="text-xl font-semibold mb-4">Create New Task</h3>
             <form id="taskForm" onsubmit="addTask(event)">
                 <div class="grid gap-4 mb-4 grid-cols-2">
