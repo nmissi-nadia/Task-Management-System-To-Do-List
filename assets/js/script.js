@@ -14,7 +14,7 @@ function hideModal() {
 }
 
 // Fonction pour ajouter une tâche
-function addTask(event) {
+function AddTask(event) {
     event.preventDefault();
 
     const title = document.getElementById("name").value.trim();
@@ -23,7 +23,6 @@ function addTask(event) {
     const description = document.getElementById("description").value.trim();
     let isValid = true; 
 
-    // validation de titre
     if (title === "") {
         alert("Le titre est requis.");
         isValid = false;
@@ -32,12 +31,10 @@ function addTask(event) {
         isValid = false;
     }
 
-    // validation de date
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
         alert("La date de début doit être antérieure ou égale à la date de fin.");
         isValid = false;
     }
-// validation de description
     if (description === "") {
         alert("La description est vide.");
         isValid = false;
@@ -50,6 +47,7 @@ function addTask(event) {
         hideModal();
     }else{
         Afficher_form();
+        hideModal();
     }
 
     
@@ -166,6 +164,19 @@ function filter_Taches() {
         task.style.display = task.textContent.toLowerCase().includes(searchText) ? "" : "none";
     });
 }
+// function for recherche
+function searchTaskByTitle() {
+    const searchTitle = document.getElementById("searchInput").value.toLowerCase().trim();
+    const Tachecorres = tasks.filter(task => task.title.toLowerCase() === searchTitle);
+    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
+
+    if (Tachecorres.length > 0) {
+        Tachecorres.forEach(task => displayTask(task));
+    } else {
+        alert("Il n'existe pas de tâche avec ce titre.");
+    }
+}
+
 
 // fonction qui permet de filtrer les taches  d'apres une select par les priority 
 // function filtrerByPriority(){
@@ -198,6 +209,37 @@ function Mise_a_jour_nbr_Tache() {
     document.getElementById("doing-count").textContent = statusCounts["doing"];
     document.getElementById("done-count").textContent = statusCounts["done"];
 }
+
+function sortTasks() {
+    const sortType = document.getElementById("sortType").value;
+
+    // Tri les tâches en fonction du type et de l'ordre
+    tasks.sort((a, b) => {
+        switch (sortType) {
+            case "dueDateAsc":
+                return new Date(a.endDate) - new Date(b.endDate); // Tri par date croissante
+            case "dueDateDesc":
+                return new Date(b.endDate) - new Date(a.endDate); // Tri par date décroissante
+            case "priorityAsc":
+                return a.priority.localeCompare(b.priority); // Tri par priorité croissante (P1, P2, P3)
+            case "priorityDesc":
+                return b.priority.localeCompare(a.priority); // Tri par priorité décroissante (P3, P2, P1)
+            default:
+                return 0;
+        }
+    });
+
+    // Efface les tâches affichées dans chaque colonne
+    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
+
+    // Réaffiche les tâches triées
+    tasks.forEach(task => displayTask(task));
+}
+
+
+
+
+
 window.onload = () => tasks.forEach(task => displayTask(task));
 
 
