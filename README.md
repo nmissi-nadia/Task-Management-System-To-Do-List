@@ -1,5 +1,5 @@
 # Task-Management-System-To-Do-List
-Une application de gestion de tâches permettant d’ajouter, de rechercher, de filtrer et de prioriser les tâches en utilisant Html, CSS et Javascript.
+Une site web de gestion de tâches permettant d’ajouter, de rechercher, de filtrer et de prioriser les tâches en utilisant Html, CSS et Javascript.
 
 ### Rapport de Projet - Application de Gestion de Tâches
 
@@ -7,19 +7,20 @@ Une application de gestion de tâches permettant d’ajouter, de rechercher, de 
 
 ### Introduction
 
-Ce projet consiste en la création d'une application de gestion de tâches utilisant HTML, CSS (avec Tailwind CSS), et JavaScript. L'application permet aux utilisateurs de créer, modifier, supprimer et afficher leurs tâches avec des options de tri et de filtrage. Les données sont enregistrées en local grâce à `localStorage`, permettant ainsi de conserver les tâches entre les sessions.
+Ce projet consiste en la création d'une site web de gestion de tâches utilisant HTML, CSS (avec Tailwind CSS), et JavaScript. L'application permet aux utilisateurs de créer, modifier, supprimer et afficher leurs tâches avec des options de tri et de filtrage. Les données sont enregistrées en local grâce à `localStorage`, permettant ainsi de conserver les tâches entre les sessions.
 
 ---
 
 ### Fonctionnalités
 
 - **Ajouter une tâche** : Création d'une nouvelle tâche avec titre, dates de début et de fin, statut, priorité et description.
-  (![Code pour la Fonction pour ajouter une nouvelle tâche](image.png))
+  (![Code pour la Fonction pour ajouter une nouvelle tâche](/assets/imgs/image.png))
 - **Afficher les tâches** : Affichage de chaque tâche dans une section correspondant à son statut.
-  ![code pour la Fonction pour afficher une nouvelle tâche](image-1.png)
+  ![code pour la Fonction pour afficher une nouvelle tâche](/assets/imgs/image-1.png)
 - **Modifier une tâche** : Affichage des informations de la tâche dans un formulaire de modification.
-  
+  ![Code pour la Fonction pour modifier une tâche](/assets/imgs/image-2.png)
 - **Supprimer une tâche** : Suppression d'une tâche de l'affichage et de `localStorage`.
+![Code pour la Fonction pour supprimer une tâche](/assets/imgs/image-3.png)
 - **Drag-and-drop** : Déplacement des tâches entre les différentes sections.
 - **Filtrage des tâches** : trier les tâches selon la méthode selecté.
 

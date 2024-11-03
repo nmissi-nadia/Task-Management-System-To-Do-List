@@ -39,7 +39,7 @@ function AddTask(event) {
         alert("La description est vide.");
         isValid = false;
     }
-    let id = tasks.length === 0 ? 0 : tasks[tasks.length - 1].id + 1;
+    let id = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
     const task = getTaskFromForm(id);
     if(isValid === true){
         saveTaskToLocalStorage(task); 
@@ -65,7 +65,7 @@ function displayTask(task) {
     if (existingTask) existingTask.remove();  
 
     const taskContainer = document.createElement("div");
-    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow","transform", "transition","duration-500" ,"hover:scale-125");
+    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow","transform", "transition","duration-500" ,"hover:scale-125","hover:bg-cyan-600");
     taskContainer.draggable = true;
     taskContainer.ondragstart = drag;
     taskContainer.id = task.id;
@@ -76,7 +76,7 @@ function displayTask(task) {
 
     taskContainer.innerHTML = `
         <p class="font-medium">${task.title}</p>
-        <p class="font-medium">${task.description}</p>
+        <p class="font-small">${task.description}</p>
         <p class="text-gray-500 text-sm">From ${task.startDate} Until ${task.endDate}</p>
         <div class="mt-2 flex space-x-2">
             <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="supprimerTask(${task.id})">Delete</button>
@@ -157,37 +157,51 @@ function drop(event) {
     event.target.appendChild(task);
 }
 
+
+
 // Filtrage des tâches
 function filter_Taches() {
     const searchText = document.getElementById("searchInput").value.toLowerCase();
+    const selectedPriority = document.getElementById("priorityFilter").value;
+
     document.querySelectorAll(".task-card").forEach(task => {
-        task.style.display = task.textContent.toLowerCase().includes(searchText) ? "" : "none";
+        const taskTitle = task.querySelector(".task-title").textContent.toLowerCase();
+        const taskPriority = task.getAttribute("data-priority"); // Supposant que chaque tâche a un attribut data-priority
+
+        // Condition d'affichage : correspond au texte recherché et à la priorité sélectionnée
+        if ((searchText === "" || taskTitle.includes(searchText)) &&
+            (selectedPriority === "all" || taskPriority === selectedPriority)) {
+            task.style.display = "";
+        } else {
+            task.style.display = "none";
+        }
     });
 }
+
 // function for recherche
 function searchTaskByTitle() {
     const searchTitle = document.getElementById("searchInput").value.toLowerCase().trim();
     const Tachecorres = tasks.filter(task => task.title.toLowerCase() === searchTitle);
+
+    // Vider toutes les colonnes avant d'afficher le résultat de recherche
     document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
 
     if (Tachecorres.length > 0) {
-        Tachecorres.forEach(task => displayTask(task));
+        Tachecorres.forEach(task => {
+            // Affiche chaque tâche dans sa colonne associée selon son statut
+            const taskColumnId = `${task.status}-tasks`;
+            const taskColumn = document.getElementById(taskColumnId);
+
+            if (taskColumn) {
+                displayTask(task);
+                taskColumn.appendChild(document.getElementById(task.id)); // Associe la tâche affichée à sa colonne
+            }
+        });
     } else {
         alert("Il n'existe pas de tâche avec ce titre.");
     }
 }
 
-
-// fonction qui permet de filtrer les taches  d'apres une select par les priority 
-// function filtrerByPriority(){
-//     const prchoisi = document.getElementById("priorityFilter").value;
-//     document.querySelectorAll(".task-column").forEach(column => column.innerHTML ="");
-//     tasks.forEach(task => {
-//         if (prchoisi === "all"  || task.priority === prchoisi) {
-//         displayTask(task);
-//     }
-// });
-// }
 function filtrerByPriority() {
     const selectedPriority = document.getElementById("priorityFilter").value;
     document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
