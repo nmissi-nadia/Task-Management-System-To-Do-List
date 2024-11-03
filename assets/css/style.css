@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+hover-scale {
+    transition: transform 0.3s ease-in-out;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Ombre au survol */
+.hover-shadow {
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Couleur de fond au survol */
+.hover-bg {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.hover-bg:hover {
+    background-color: rgba(37, 99, 235, 1); /* Couleur de fond personnalisée */
+}
+
+/* Autres animations personnalisées */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+body {
+    margin: 0;
+    /* 1 */
+    line-height: inherit;
+    /* 2 */
+    background-image: url(../imgs/todo.jpg);
+    background-size: cover;
+  }
+  @media (max-width: 768px) {
+    .mod_div {
+        flex-direction: column; 
+    }
+
+    .recherche {
+        width: 100%; 
+    }
+
+
+@media (min-width: 768px) {
+    .mod_div {
+        flex-direction: row; 
+    }
+
+    .recherche {
+        width: 33%;
+    }
+
+}
+  }

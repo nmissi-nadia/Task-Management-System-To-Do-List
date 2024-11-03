@@ -60,7 +60,7 @@ function displayTask(task) {
     if (existingTask) existingTask.remove();
 
     const taskContainer = document.createElement("div");
-    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow", "transform", "transition", "duration-500", "hover:scale-125");
+    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow","transform", "transition", "duration-300", "hover:scale-105", "hover:shadow-lg");
     taskContainer.draggable = true;
     taskContainer.ondragstart = drag;
     taskContainer.id = task.id;
@@ -74,8 +74,8 @@ function displayTask(task) {
     <p class="font-small">${task.description}</p>
     <p class="text-gray-500 text-sm">From ${task.startDate} Until ${task.endDate}</p>
     <div class="mt-2 flex space-x-2">
-        <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="supprimerTask('${task.id}')">Delete</button>
-        <button class="bg-yellow-400 text-white px-2 py-1 rounded" onclick="editTask('${task.id}')">Edit</button>
+        <button class="bg-red-500 text-white px-2 py-1 rounded transition duration-300 hover:bg-red-600" onclick="supprimerTask('${task.id}')">Delete</button>
+        <button class="bg-yellow-400 text-white px-2 py-1 rounded transition duration-300 hover:bg-yellow-500" onclick="editTask('${task.id}')">Edit</button>
     </div>
 `;
     const column = document.getElementById(`${task.status}-tasks`);
@@ -109,7 +109,6 @@ console.log("Type of id in editTask:", typeof id);
     if (taskToEditIndex !== -1) {
         const taskToEdit = tasks[taskToEditIndex];
 
-        // Populate the form with the task details
         document.getElementById("name").value = taskToEdit.title;
         document.getElementById("startdate").value = taskToEdit.startDate;
         document.getElementById("duedate").value = taskToEdit.endDate;
@@ -117,41 +116,29 @@ console.log("Type of id in editTask:", typeof id);
         document.getElementById("priority").value = taskToEdit.priority;
         document.getElementById("description").value = taskToEdit.description;
 
-        Afficher_form(); // Show the form
+        Afficher_form(); 
 
         document.getElementById("taskForm").onsubmit = function(event) {
             event.preventDefault();
-
-            // Get the updated task from the form
             const updatedTask = getTaskFromForm(id);
             console.log("Updating task with ID:", id);
-
-            // Update the task in the array
             tasks[taskToEditIndex] = updatedTask;
-
-            // Update local storage
             localStorage.setItem("tasks", JSON.stringify(tasks));
-
-            // Remove the old task element from the DOM
             const oldTaskElement = document.getElementById(id);
             if (oldTaskElement) {
                 oldTaskElement.remove();
             }
-
-            // Display the updated task
             displayTask(updatedTask);
-            hideModal(); // Hide the modal after updating
+            hideModal();
         };
     }
 }
 
-// Function to delete a task
+// delete a task
 function supprimerTask(id) {
-    console.log("Deleting task with ID:", id); // Debugging line
+    console.log("Deleting task with ID:", id);
     console.log("Current tasks before deletion:", tasks);
-
-    // Ensure id is a number for comparison
-    tasks = tasks.filter(task => compareIds(task.id, id)==0); // Ensure id is of the same type
+    tasks = tasks.filter(task => compareIds(task.id, id)==0); 
 
     console.log("Tasks after filtering:", tasks);
 
@@ -159,12 +146,10 @@ function supprimerTask(id) {
     if (taskElement) {
         taskElement.remove();
     }
-
-    // Update local storage with the new tasks array
     localStorage.setItem("tasks", JSON.stringify(tasks));
     console.log("Updated tasks in local storage:", JSON.parse(localStorage.getItem("tasks")));
 
-    Mise_a_jour_nbr_Tache(); // Update task count or refresh display
+    Mise_a_jour_nbr_Tache();
 }
 
 function Mise_a_jour_nbr_Tache() {
@@ -201,7 +186,7 @@ function searchTaskByTitle() {
 
 function filtrerByPriority() {
     const selectedPriority = document.getElementById("priorityFilter").value;
-    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
+    document.querySelectorAll("#todo-tasks, #doing-tasks, #done-tasks").forEach(column => column.innerHTML = "");
     const filteredTasks = tasks.filter(task => selectedPriority === "all" || task.priority === selectedPriority);
     filteredTasks.forEach(task => displayTask(task));
 }
