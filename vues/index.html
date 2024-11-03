@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Efficient task management application with dynamic to-do list, drag-and-drop, filtering, and sorting capabilities.">
-    <meta name="keywords" content="To Do List, Task Management, TaskFlow, Productivity">
+    <meta name="keywords" content="To Do List, Task Management, TaskFlow, Productivity,Liste de tâches, Gestion de tâches, Productivité">
     <title>To Do List</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/output.css">
     <script defer src="../assets/js/script.js"></script>
@@ -16,40 +15,34 @@
 
         <!-- Header and Actions -->
         <div class="flex justify-between items-center mb-8 mod_div ">
-            <button id="but-add1" onclick="Afficher_form()" class="block text-white bg-cyan-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button">
+            <button id="but-add1" onclick="Afficher_form()" class="block text-white bg-cyan-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button" aria-label="Add Task">
                 Add Task +
             </button>
             <div class="recherche relative w-1/3">
-                <input type="text" id="searchInput" placeholder="Search ..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none">
-                <span class="absolute right-3 top-2.5 text-gray-800"  >
-                    <button class="text-white bg-cyan-600 hover:bg-blue-800" onclick="searchTaskByTitle()">Rechercher</button>
-                    
+                <input type="text" id="searchInput" placeholder="Search ..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none" aria-label="Search tasks">
+                <span class="absolute right-3 top-2.5 text-gray-800">
+                    <button class="text-white bg-cyan-600 hover:bg-blue-800" onclick="searchTaskByTitle()" aria-label="Search by title">Rechercher</button>
                 </span>
             </div>
-            
-            <button onclick="Afficher_form()" class="block text-white bg-cyan-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button">
+            <button onclick="Afficher_form()" class="block text-white bg-cyan-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5" type="button" aria-label="Add Multiple Tasks">
                 Add Multiple Tasks
             </button>
         </div>
         <div class="flex justify-between items-center mb-8 mod_div ">
-            <!-- <div class="flex flex-col md:flex-row items-center space-y-2"></div> -->
-                <label for="sortType">Sort by:</label>
-                <select id="sortType" onchange="sortTasks()" class="bg-cyan-600 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
-                    <option value="dueDateAsc">Due Date - Ascending</option>
-                    <option value="dueDateDesc">Due Date - Descending</option>
-                    <option value="priorityAsc">Priority - Ascending</option>
-                    <option value="priorityDesc">Priority - Descending</option>
-                </select>
-            
-            
-                <label for="priorityFilter" class="font-semibold text-gray-700">Filtrer par priorité :</label>
-                <select id="priorityFilter" onchange="filtrerByPriority()" class="bg-cyan-600 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
-                    <option value="all" class="font-medium">Toutes les priorités</option>
-                    <option value="P1" class="font-medium text-red-500">P1 - Haute</option>
-                    <option value="P2" class="font-medium text-yellow-500">P2 - Moyenne</option>
-                    <option value="P3" class="font-medium text-green-500">P3 - Basse</option>
-                </select>
-            <!-- </div> -->
+            <label for="sortType">Sort by:</label>
+            <select id="sortType" onchange="sortTasks()" class="bg-cyan-600 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                <option value="dueDateAsc">Due Date - Ascending</option>
+                <option value="dueDateDesc">Due Date - Descending</option>
+                <option value="priorityAsc">Priority - Ascending</option>
+                <option value="priorityDesc">Priority - Descending</option>
+            </select>
+            <label for="priorityFilter" class="font-semibold text-gray-700">Filtrer par priorité :</label>
+            <select id="priorityFilter" onchange="filtrerByPriority()" class="bg-cyan-600 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                <option value="all" class="font-medium">Toutes les priorités</option>
+                <option value="P1" class="font-medium text-red-500">P1 - Haute</option>
+                <option value="P2" class="font-medium text-yellow-500">P2 - Moyenne</option>
+                <option value="P3" class="font-medium text-green-500">P3 - Basse</option>
+            </select>
         </div>
         <!-- Task Columns (To Do, In Progress, Done) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -57,23 +50,23 @@
                 <h2 class="text-lg font-semibold mb-2">To Do | (<span id="todo-count">0</span>)</h2>
                 <hr class="border-t-2 border-red-400 my-2">
                 <div class="space-y-4" id="todo-tasks">
-                    <!-- lorsque j'ai ajouté une tache to do sera afficher là -->
+                    <!-- Tasks will be displayed here -->
                 </div>
             </div>
 
-            <div id="doing-column" data-status="doing" class="bg-white border-neutral-950 p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div id="doing-column" data-status="doing" class="bg-white border-neutral-950 p-4 rounded-lg shadow-lg" ondrop="drop(event)" ondragover ="allowDrop(event)">
                 <h2 class="text-lg font-semibold mb-2">In Progress | (<span id="doing-count">0</span>)</h2>
                 <hr class="border-t-2 border-yellow-400 my-2">
                 <div class="space-y-4" id="doing-tasks">
-                    <!-- lorsque j'ai ajouté une tache doing sera afficher là -->
+                    <!-- Tasks will be displayed here -->
                 </div>
             </div>
 
             <div id="done-column" data-status="done" class="bg-white p-4 border-neutral-950 rounded-lg shadow-lg" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h2 class="text-lg font-semibold mb-2">Done | (<span id="done-count">0</span>)</h2>
                 <hr class="border-t-2 border-green-400 my-2">
-                <div class="space-y-4 " id="done-tasks">
-                    <!-- lorsque j'ai ajouté une tache done sera afficher là -->
+                <div class="space-y-4" id="done-tasks">
+                    <!-- Tasks will be displayed here -->
                 </div>
             </div>
         </div>
@@ -81,21 +74,21 @@
 
     <!-- Modal for Adding Task -->
     <div id="crud-modal" class="hidden fixed inset-0 flex items-center justify-center z-50">
-        <div class=" rounded-lg bg-cyan-600 shadow-lg w-full max-w-md p-6">
+        <div class="rounded-lg bg-cyan-600 shadow-lg w-full max-w-md p-6">
             <h3 class="text-xl font-semibold mb-4">Create New Task</h3>
             <form id="taskForm" onsubmit="AddTask(event)">
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
                         <label for="name" class="block text-sm font-medium">Title</label>
-                        <input type="text" name="name" id="name" class="border border-gray-300 rounded-lg w-full p-2.5" required>
+                        <input type="text" name="name" id="name" class="border border-gray-300 rounded-lg w-full p-2.5" required aria-label="Task title">
                     </div>
                     <div class="col-span-1">
                         <label for="startdate" class="block text-sm font-medium">Start Date</label>
-                        <input type="date" name="startdate" id="startdate" class="border border-gray-300 rounded-lg w-full p-2.5" required>
+                        <input type="date" name="startdate" id="startdate" class="border border-gray-300 rounded-lg w-full p-2.5" required aria-label="Start date">
                     </div>
                     <div class="col-span-1">
                         <label for="duedate" class="block text-sm font-medium">End Date</label>
-                        <input type="date" name="duedate" id="duedate" class="border border-gray-300 rounded-lg w-full p-2.5" required>
+                        <input type="date" name="duedate" id="duedate" class="border border-gray-300 rounded-lg w-full p-2.5" required aria-label="End date">
                     </div>
                     <div class="col-span-1">
                         <label for="status" class="block text-sm font-medium">Status</label>
@@ -115,14 +108,13 @@
                     </div>
                     <div class="col-span-2">
                         <label for="description" class="block text-sm font-medium">Description</label>
-                        <textarea id="description" rows="4" class="border border-gray-300 rounded-lg w-full p-2.5"></textarea>
+                        <textarea id="description" rows="4" class="border border-gray-300 rounded-lg w-full p-2.5" aria-label="Task description"></textarea>
                     </div>
                 </div>
-                <button type="submit" class="bg-blue-700 text-white rounded-lg px-4 py-2 font-medium">Add Task</button>
-                <button type="button" onclick="hideModal()" class="bg-gray-500 text-white rounded-lg px-4 py-2 font-medium ml-2">Cancel</button>
+                <button type="submit" class="bg-blue-700 text-white rounded-lg px-4 py-2 font-medium" aria-label="Add task">Add Task</button>
+                <button type="button" onclick="hideModal()" class="bg-gray-500 text-white rounded-lg px-4 py-2 font-medium ml-2" aria-label="Cancel">Cancel</button>
             </form>
         </div>
     </div>
-    <script src="../assets/js/script.js"></script>
 </body>
 </html>

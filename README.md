@@ -68,4 +68,4 @@ Nous tenons à exprimer notre gratitude envers notre formateur, [Houssni Ouchad]
 
 ### Auteur
 
-Créé par [Nmissi Nadia][[@nmissi-nadia](https://github.com/nmissi-nadia)], étudiant à YouCode School.
+Créé par [Nmissi Nadia:[@nmissi-nadia](https://github.com/nmissi-nadia)], étudiante à YouCode School.
