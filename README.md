@@ -22,7 +22,9 @@ Ce projet consiste en la création d'une site web de gestion de tâches utilisan
 - **Supprimer une tâche** : Suppression d'une tâche de l'affichage et de `localStorage`.
 ![Code pour la Fonction pour supprimer une tâche](/assets/imgs/image-3.png)
 - **Drag-and-drop** : Déplacement des tâches entre les différentes sections.
+![Drag and Drop ](assets/imgs/drag.png)
 - **Filtrage des tâches** : trier les tâches selon la méthode selecté.
+![Tri des taches](assets/imgs/tri.png)
 
 ---
 
