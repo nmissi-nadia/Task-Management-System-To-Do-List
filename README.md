@@ -14,12 +14,13 @@ Ce projet consiste en la création d'une application de gestion de tâches utili
 ### Fonctionnalités
 
 - **Ajouter une tâche** : Création d'une nouvelle tâche avec titre, dates de début et de fin, statut, priorité et description.
-  (![Code pour la Fonction pour ajouter une nouvelle tâche](image.png))
+  (![Code pour la Fonction pour ajouter une nouvelle tâche](/assets/imgs/image.png))
 - **Afficher les tâches** : Affichage de chaque tâche dans une section correspondant à son statut.
-  ![code pour la Fonction pour afficher une nouvelle tâche](image-1.png)
+  ![code pour la Fonction pour afficher une nouvelle tâche](/assets/imgs/image-1.png)
 - **Modifier une tâche** : Affichage des informations de la tâche dans un formulaire de modification.
-  
+  ![Code pour la Fonction pour modifier une tâche](/assets/imgs/image-2.png)
 - **Supprimer une tâche** : Suppression d'une tâche de l'affichage et de `localStorage`.
+![Code pour la Fonction pour supprimer une tâche](/assets/imgs/image-3.png)
 - **Drag-and-drop** : Déplacement des tâches entre les différentes sections.
 - **Filtrage des tâches** : trier les tâches selon la méthode selecté.
 

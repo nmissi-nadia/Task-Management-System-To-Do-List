@@ -3,4 +3,5 @@ node_modules
 package.json
 package-lock.json
 tailwind.config.js
+tailwind.config.js.orig
 try.html
