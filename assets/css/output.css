@@ -204,26 +204,12 @@ abbr:where([title]) {
 
 @media(max-width:700){
   mod_div{
-    display : grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 20px;
+    display : flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
   }
-  mod_div #mod_div{
-    grid-column: 0;
-    grid-row: 1;
-  }
-  mod_div .recherche{
-    grid-column: 0;
-    grid-row: 1;
-  }
-  mod_div #mod_div{
-    grid-column: 0;
-    grid-row: 1;
-  }
-  mod_div #mod_div{
-    grid-column: 0;
-    grid-row: 1;
-  }
+ 
   
 }
 /*

@@ -1,6 +1,4 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-tasks.forEach(task => displayTask(task));
-console.log(tasks);
 
 // Fonction pour afficher le formulaire de création de tâche
 function Afficher_form() {
@@ -10,7 +8,7 @@ function Afficher_form() {
 // Fonction pour cacher le formulaire et le réinitialiser
 function hideModal() {
     document.getElementById("crud-modal").classList.add("hidden");
-    document.getElementById("taskForm").reset();
+    document.getElementById("taskForm ").reset();
 }
 
 // Fonction pour ajouter une tâche
@@ -21,7 +19,7 @@ function AddTask(event) {
     const startDate = document.getElementById("startdate").value;
     const endDate = document.getElementById("duedate").value;
     const description = document.getElementById("description").value.trim();
-    let isValid = true; 
+    let isValid = true;
 
     if (title === "") {
         alert("Le titre est requis.");
@@ -39,18 +37,15 @@ function AddTask(event) {
         alert("La description est vide.");
         isValid = false;
     }
-    let id = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
-    const task = getTaskFromForm(id);
-    if(isValid === true){
-        saveTaskToLocalStorage(task); 
+
+    if (isValid) {
+        // const id = `${Date.now()}`;
+        let id = Date.now();
+        const task = getTaskFromForm(id);
+        saveTaskToLocalStorage(task);
         displayTask(task);
         hideModal();
-    }else{
-        Afficher_form();
-        hideModal();
     }
-
-    
 }
 
 // Fonction pour sauvegarder une tâche dans localStorage
@@ -62,10 +57,10 @@ function saveTaskToLocalStorage(task) {
 // Fonction pour afficher une tâche sur la page
 function displayTask(task) {
     const existingTask = document.getElementById(task.id);
-    if (existingTask) existingTask.remove();  
+    if (existingTask) existingTask.remove();
 
     const taskContainer = document.createElement("div");
-    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow","transform", "transition","duration-500" ,"hover:scale-125","hover:bg-cyan-600");
+    taskContainer.classList.add("border-l-4", "bg-white", "p-4", "rounded-lg", "shadow", "transform", "transition", "duration-500", "hover:scale-125");
     taskContainer.draggable = true;
     taskContainer.ondragstart = drag;
     taskContainer.id = task.id;
@@ -75,20 +70,18 @@ function displayTask(task) {
     else if (task.priority === "P3") taskContainer.classList.add("border-green-400");
 
     taskContainer.innerHTML = `
-        <p class="font-medium">${task.title}</p>
-        <p class="font-small">${task.description}</p>
-        <p class="text-gray-500 text-sm">From ${task.startDate} Until ${task.endDate}</p>
-        <div class="mt-2 flex space-x-2">
-            <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="supprimerTask(${task.id})">Delete</button>
-            <button class="bg-yellow-400 text-white px-2 py-1 rounded" onclick="editTask(${task.id})">Edit</button>
-        </div>
-    `;
-
+    <p class="font-medium">${task.title}</p>
+    <p class="font-small">${task.description}</p>
+    <p class="text-gray-500 text-sm">From ${task.startDate} Until ${task.endDate}</p>
+    <div class="mt-2 flex space-x-2">
+        <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="supprimerTask('${task.id}')">Delete</button>
+        <button class="bg-yellow-400 text-white px-2 py-1 rounded" onclick="editTask('${task.id}')">Edit</button>
+    </div>
+`;
     const column = document.getElementById(`${task.status}-tasks`);
     column.appendChild(taskContainer);
     Mise_a_jour_nbr_Tache();
 }
-
 
 // Récupère les informations de tâche depuis le formulaire
 function getTaskFromForm(id) {
@@ -102,14 +95,21 @@ function getTaskFromForm(id) {
         description: document.getElementById("description").value,
     };
 }
+function compareIds(id1, id2) {
+    return Number(id1) === Number(id2);
+}
 
-// Fonction pour éditer une tâche
 function editTask(id) {
-    const taskToEditIndex = tasks.findIndex(task => task.id === id); 
+    // console.log("Type of task.id:", typeof task.id); // Vérifiez le type de task.id
+console.log("Type of id in editTask:", typeof id);
+    console.log("Edit task called with ID:", id); 
+    const taskToEditIndex = tasks.findIndex(task => compareIds(task.id, id));
 
+    console.log("taskToEditIndex:", taskToEditIndex);
     if (taskToEditIndex !== -1) {
         const taskToEdit = tasks[taskToEditIndex];
 
+        // Populate the form with the task details
         document.getElementById("name").value = taskToEdit.title;
         document.getElementById("startdate").value = taskToEdit.startDate;
         document.getElementById("duedate").value = taskToEdit.endDate;
@@ -117,100 +117,56 @@ function editTask(id) {
         document.getElementById("priority").value = taskToEdit.priority;
         document.getElementById("description").value = taskToEdit.description;
 
-        Afficher_form();
+        Afficher_form(); // Show the form
 
         document.getElementById("taskForm").onsubmit = function(event) {
             event.preventDefault();
 
+            // Get the updated task from the form
             const updatedTask = getTaskFromForm(id);
+            console.log("Updating task with ID:", id);
 
-            tasks[taskToEditIndex] = updatedTask; 
+            // Update the task in the array
+            tasks[taskToEditIndex] = updatedTask;
+
+            // Update local storage
             localStorage.setItem("tasks", JSON.stringify(tasks));
 
+            // Remove the old task element from the DOM
+            const oldTaskElement = document.getElementById(id);
+            if (oldTaskElement) {
+                oldTaskElement.remove();
+            }
+
+            // Display the updated task
             displayTask(updatedTask);
-            hideModal(); 
+            hideModal(); // Hide the modal after updating
         };
     }
 }
 
-// Fonction pour supprimer une tâche
+// Function to delete a task
 function supprimerTask(id) {
-    tasks = tasks.filter(task => task.id !== id);
-    const taskCard = document.getElementById(id);
-    if (taskCard) taskCard.remove();
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-    
-// Fonction de gestion du drag-and-drop
-function drag(event) {
-    event.dataTransfer.setData("text", event.target.id);
-}
+    console.log("Deleting task with ID:", id); // Debugging line
+    console.log("Current tasks before deletion:", tasks);
 
-function allowDrop(event) {
-    event.preventDefault();
-}
+    // Ensure id is a number for comparison
+    tasks = tasks.filter(task => compareIds(task.id, id)==0); // Ensure id is of the same type
 
-function drop(event) {
-    event.preventDefault();
-    const data = event.dataTransfer.getData("text");
-    const task = document.getElementById(data);
-    event.target.appendChild(task);
-}
+    console.log("Tasks after filtering:", tasks);
 
-
-
-// Filtrage des tâches
-function filter_Taches() {
-    const searchText = document.getElementById("searchInput").value.toLowerCase();
-    const selectedPriority = document.getElementById("priorityFilter").value;
-
-    document.querySelectorAll(".task-card").forEach(task => {
-        const taskTitle = task.querySelector(".task-title").textContent.toLowerCase();
-        const taskPriority = task.getAttribute("data-priority"); // Supposant que chaque tâche a un attribut data-priority
-
-        // Condition d'affichage : correspond au texte recherché et à la priorité sélectionnée
-        if ((searchText === "" || taskTitle.includes(searchText)) &&
-            (selectedPriority === "all" || taskPriority === selectedPriority)) {
-            task.style.display = "";
-        } else {
-            task.style.display = "none";
-        }
-    });
-}
-
-// function for recherche
-function searchTaskByTitle() {
-    const searchTitle = document.getElementById("searchInput").value.toLowerCase().trim();
-    const Tachecorres = tasks.filter(task => task.title.toLowerCase() === searchTitle);
-
-    // Vider toutes les colonnes avant d'afficher le résultat de recherche
-    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
-
-    if (Tachecorres.length > 0) {
-        Tachecorres.forEach(task => {
-            // Affiche chaque tâche dans sa colonne associée selon son statut
-            const taskColumnId = `${task.status}-tasks`;
-            const taskColumn = document.getElementById(taskColumnId);
-
-            if (taskColumn) {
-                displayTask(task);
-                taskColumn.appendChild(document.getElementById(task.id)); // Associe la tâche affichée à sa colonne
-            }
-        });
-    } else {
-        alert("Il n'existe pas de tâche avec ce titre.");
+    const taskElement = document.getElementById(id);
+    if (taskElement) {
+        taskElement.remove();
     }
+
+    // Update local storage with the new tasks array
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    console.log("Updated tasks in local storage:", JSON.parse(localStorage.getItem("tasks")));
+
+    Mise_a_jour_nbr_Tache(); // Update task count or refresh display
 }
 
-function filtrerByPriority() {
-    const selectedPriority = document.getElementById("priorityFilter").value;
-    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
-    const filteredTasks = tasks.filter(task => selectedPriority === "all" || task.priority === selectedPriority);
-    filteredTasks.forEach(task => displayTask(task));
-}
-
-
-// le mise a jour du nombre des taches pour chaque column
 function Mise_a_jour_nbr_Tache() {
     const statusCounts = { "todo": 0, "doing": 0, "done": 0 };
 
@@ -224,37 +180,83 @@ function Mise_a_jour_nbr_Tache() {
     document.getElementById("done-count").textContent = statusCounts["done"];
 }
 
+
+
+// function for recherche
+function searchTaskByTitle() {
+    const searchTitle = document.getElementById("searchInput").value.toLowerCase().trim();
+    
+    document.querySelectorAll(".space-y-4").forEach(column => column.innerHTML = "");
+
+    const matchingTasks = tasks.filter(task => task.title.toLowerCase().includes(searchTitle));
+
+    if (matchingTasks.length > 0) {
+        matchingTasks.forEach(task => {
+            displayTask(task); 
+        });
+    } else {
+        alert("Il n'existe pas de tâche avec ce titre.");
+    }
+}
+
+function filtrerByPriority() {
+    const selectedPriority = document.getElementById("priorityFilter").value;
+    document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
+    const filteredTasks = tasks.filter(task => selectedPriority === "all" || task.priority === selectedPriority);
+    filteredTasks.forEach(task => displayTask(task));
+}
+
+// Fonction de gestion du drag-and-drop
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+function drop(event) {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text");
+    const task = document.getElementById(data);
+
+    event.target.appendChild(task);
+
+    const nouveauStatut = event.target.getAttribute("data-status");
+    if (nouveauStatut) {
+        task.setAttribute("data-status", nouveauStatut);
+    }
+
+    const index = tasks.findIndex(t => t.id === data);
+    if (index !== -1) {
+        tasks[index].status = nouveauStatut;
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    Mise_a_jour_nbr_Tache();
+}
+
+// Sorting tasks
 function sortTasks() {
     const sortType = document.getElementById("sortType").value;
 
-    // Tri les tâches en fonction du type et de l'ordre
     tasks.sort((a, b) => {
         switch (sortType) {
             case "dueDateAsc":
-                return new Date(a.endDate) - new Date(b.endDate); // Tri par date croissante
+                return new Date(a.endDate) - new Date(b.endDate);
             case "dueDateDesc":
-                return new Date(b.endDate) - new Date(a.endDate); // Tri par date décroissante
+                return new Date(b.endDate) - new Date(a.endDate);
             case "priorityAsc":
-                return a.priority.localeCompare(b.priority); // Tri par priorité croissante (P1, P2, P3)
+                return a.priority.localeCompare(b.priority);
             case "priorityDesc":
-                return b.priority.localeCompare(a.priority); // Tri par priorité décroissante (P3, P2, P1)
+                return b.priority.localeCompare(a.priority);
             default:
                 return 0;
         }
     });
 
-    // Efface les tâches affichées dans chaque colonne
     document.querySelectorAll(".task-column").forEach(column => column.innerHTML = "");
 
-    // Réaffiche les tâches triées
     tasks.forEach(task => displayTask(task));
 }
-
-
-
-
-
 window.onload = () => tasks.forEach(task => displayTask(task));
-
-
-
